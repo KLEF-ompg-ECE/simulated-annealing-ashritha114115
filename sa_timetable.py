@@ -54,7 +54,6 @@ STUDENTS = [
     [5,0,6],[6,1,7],[7,2,8],[8,3,9],[9,4,0],
 ]
 
-
 # =============================================================================
 # OBJECTIVE FUNCTION
 # =============================================================================
@@ -80,7 +79,6 @@ def count_clashes(timetable):
             seen_slots.add(slot)
     return clashes
 
-
 # =============================================================================
 # NEIGHBOUR FUNCTION
 # =============================================================================
@@ -95,7 +93,6 @@ def generate_neighbor(timetable):
     new_slot = random.choice([s for s in range(NUM_SLOTS) if s != current_slot])
     new_tt[exam] = new_slot
     return new_tt
-
 
 # =============================================================================
 # SIMULATED ANNEALING
@@ -126,7 +123,6 @@ def run_sa(
     temp_log       : list -- temperature at each iteration (for plotting)
     """
     random.seed(seed)
-
     current   = [random.randint(0, NUM_SLOTS - 1) for _ in range(NUM_EXAMS)]
     current_c = count_clashes(current)
     best      = current[:]
@@ -162,7 +158,6 @@ def run_sa(
 
     return best, best_c, clash_log, temp_log
 
-
 # =============================================================================
 # OUTPUT HELPERS
 # =============================================================================
@@ -175,7 +170,6 @@ def print_timetable(timetable):
         print(f"  Slot {slot+1}:  {', '.join(in_slot) if in_slot else '(empty)'}")
     print("-" * 42)
     print(f"  Total clashes : {count_clashes(timetable)}\n")
-
 
 def save_plot(clash_log, temp_log, filename, title):
     os.makedirs("plots", exist_ok=True)
@@ -192,7 +186,6 @@ def save_plot(clash_log, temp_log, filename, title):
     plt.savefig(filename, dpi=150)
     plt.close()
     print(f"  Saved -> {filename}")
-
 
 # =============================================================================
 # RUN YOUR EXPERIMENTS HERE
@@ -219,58 +212,32 @@ if __name__ == "__main__":
     save_plot(clash_log, temp_log,
               "plots/experiment_1.png", "Baseline  cooling_rate=0.995")
 
-    # ==========================================================================
-    # EXPERIMENT 2 - Effect of Cooling Rate
-    # TODO: Copy this block THREE times below (for 0.80, 0.95, and 0.995).
-    #       Change cooling_rate and the plot filename each time.
-    #       Record results in README.md.
-    # ==========================================================================
-# ======================================================================
-# EXPERIMENT 2a - cooling_rate = 0.80
-# ======================================================================
-print("=" * 48)
-print("  EXPERIMENT 2a - cooling_rate = 0.80")
-print("=" * 48)
+    # --- Experiment 2a: cooling_rate = 0.80 ---
+    tt2a, clashes2a, cl2a, tl2a = run_sa(
+        initial_temp=100.0, cooling_rate=0.80,
+        min_temp=0.1, max_iterations=5000, seed=42
+    )
+    print_timetable(tt2a)
+    print(f"  Iterations     : {len(cl2a)}")
+    print(f"  Final clashes  : {clashes2a}")
+    save_plot(cl2a, tl2a, "plots/experiment_2a.png", "cooling_rate=0.80")
 
-tt2, clashes2, cl2, tl2 = run_sa(
-    initial_temp=100.0, cooling_rate=0.80,
-    min_temp=0.1, max_iterations=5000, seed=42
-)
+    # --- Experiment 2b: cooling_rate = 0.95 ---
+    tt2b, clashes2b, cl2b, tl2b = run_sa(
+        initial_temp=100.0, cooling_rate=0.95,
+        min_temp=0.1, max_iterations=5000, seed=42
+    )
+    print_timetable(tt2b)
+    print(f"  Iterations     : {len(cl2b)}")
+    print(f"  Final clashes  : {clashes2b}")
+    save_plot(cl2b, tl2b, "plots/experiment_2b.png", "cooling_rate=0.95")
 
-print_timetable(tt2)
-print(f"  Final clashes : {clashes2}")
-save_plot(cl2, tl2, "plots/experiment_2a.png", "cooling_rate=0.80")
-
-
-# ======================================================================
-# EXPERIMENT 2b - cooling_rate = 0.95
-# ======================================================================
-print("=" * 48)
-print("  EXPERIMENT 2b - cooling_rate = 0.95")
-print("=" * 48)
-
-tt3, clashes3, cl3, tl3 = run_sa(
-    initial_temp=100.0, cooling_rate=0.95,
-    min_temp=0.1, max_iterations=5000, seed=42
-)
-
-print_timetable(tt3)
-print(f"  Final clashes : {clashes3}")
-save_plot(cl3, tl3, "plots/experiment_2b.png", "cooling_rate=0.95")
-
-
-# ======================================================================
-# EXPERIMENT 2c - cooling_rate = 0.995
-# ======================================================================
-print("=" * 48)
-print("  EXPERIMENT 2c - cooling_rate = 0.995")
-print("=" * 48)
-
-tt4, clashes4, cl4, tl4 = run_sa(
-    initial_temp=100.0, cooling_rate=0.995,
-    min_temp=0.1, max_iterations=5000, seed=42
-)
-
-print_timetable(tt4)
-print(f"  Final clashes : {clashes4}")
-save_plot(cl4, tl4, "plots/experiment_2c.png", "cooling_rate=0.995")
+    # --- Experiment 2c: cooling_rate = 0.995 ---
+    tt2c, clashes2c, cl2c, tl2c = run_sa(
+        initial_temp=100.0, cooling_rate=0.995,
+        min_temp=0.1, max_iterations=5000, seed=42
+    )
+    print_timetable(tt2c)
+    print(f"  Iterations     : {len(cl2c)}")
+    print(f"  Final clashes  : {clashes2c}")
+    save_plot(cl2c, tl2c, "plots/experiment_2c.png", "cooling_rate=0.995")
