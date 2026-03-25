@@ -22,11 +22,11 @@ Open sa_timetable.py and read through it. Then answer these questions.
 
 Q1. What does `count_clashes()` measure? What value means a perfect timetable?
 
-[count_clashes() measures the total number of exam conflicts where a student has more than one exam scheduled in the same time slot. It checks all students and counts such overlaps. A value of 0 means a perfect timetable with no clashes. ]
+[  count_clashes() measures the total number of exam conflicts where a student has more than one exam scheduled in the same time slot. It checks all students and counts such overlaps. A value of 0 means a perfect timetable with no clashes. ]
 
 Q2. What does `generate_neighbor()` do? How is the new timetable different from the current one?
 
-[generate_neighbor() creates a new timetable by randomly selecting one exam and assigning it to a different time slot. The new timetable differs from the current one by only one small change. This helps in exploring nearby solutions gradually.]
+[ generate_neighbor() creates a new timetable by randomly selecting one exam and assigning it to a different time slot. The new timetable differs from the current one by only one small change. This helps in exploring nearby solutions gradually.]
 
 Q3. In `run_sa()`, there is this line:
 if delta < 0 or random.random() < math.exp(-delta / T):
